@@ -1,4 +1,4 @@
-{% set version = "1.13" %}
+{% set version = "2.0" %}
 {% set torch_proc_type = "cuda" if cuda_compiler_version != "None" else "cpu" %}
 
 {% if cuda_compiler_version in (None, "None", True, False) %}
@@ -13,12 +13,12 @@ package:
 
 source:
   - url: https://github.com/NVIDIA/TransformerEngine/archive/refs/tags/v{{ version }}.tar.gz
-    sha256: 90dd8f694cba29707c502a4f4d12871cb9d4c1f157d329f22cb3d382de8468ae
+    sha256: 35bf7423b7de245f83613713ac007527ddce08faa251d397bc5920c746eebada
     patches:
       - 001-cmake.patch
 
-  - url: https://github.com/NVIDIA/cudnn-frontend/archive/refs/tags/v1.8.0.tar.gz
-    sha256: 5907bf8baa8f3b74ad430d54027aadd14a0a61166ae4b00c2daece0df384409e
+  - url: https://github.com/NVIDIA/cudnn-frontend/archive/refs/tags/v1.10.0.tar.gz
+    sha256: 72180416bd77837d4363fa62b4188e27e5f84a256ebfd3963ee7015a5c948e96
     folder: 3rdparty/cudnn-frontend
 
   - url: https://github.com/google/googletest/archive/refs/tags/v1.14.0.tar.gz
