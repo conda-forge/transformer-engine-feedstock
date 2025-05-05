@@ -15,7 +15,7 @@ cp $BUILD_PREFIX/targets/x86_64-linux/include/fatbinary_section.h $PREFIX/target
 cp $PREFIX/include/cudnn*.h $PREFIX/targets/x86_64-linux/include
 
 echo "Installing transformer-engine"
-NVTE_NO_LOCAL_VERSION=1 ${PYTHON} -m pip install .
+NVTE_NO_LOCAL_VERSION=1 ${PYTHON} -m pip install -v -v -v .
 
 # Remove re-arranged files.
 rm -rf $PREFIX/targets/x86_64-linux/nvvm
