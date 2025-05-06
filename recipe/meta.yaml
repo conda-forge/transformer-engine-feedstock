@@ -82,6 +82,7 @@ outputs:
       run:
         - python
         - pydantic
+        - packaging
         - importlib-metadata >=1.0
 
       run_constrained:
