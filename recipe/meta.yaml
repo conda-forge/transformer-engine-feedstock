@@ -16,6 +16,7 @@ source:
     sha256: c262667fe847a2d2223fd17d41660235a9393147fa8eb55b2936b82dd64fb5b2
     patches:
       - 001-cmake.patch
+      - 002-triton-import.patch
 
   - url: https://github.com/NVIDIA/cudnn-frontend/archive/refs/tags/v1.10.0.tar.gz
     sha256: 72180416bd77837d4363fa62b4188e27e5f84a256ebfd3963ee7015a5c948e96
