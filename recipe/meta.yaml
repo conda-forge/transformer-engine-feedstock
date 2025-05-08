@@ -1,4 +1,4 @@
-{% set version = "2.0" %}
+{% set version = "2.1" %}
 {% set torch_proc_type = "cuda" if cuda_compiler_version != "None" else "cpu" %}
 
 {% if cuda_compiler_version in (None, "None", True, False) %}
@@ -13,9 +13,10 @@ package:
 
 source:
   - url: https://github.com/NVIDIA/TransformerEngine/archive/refs/tags/v{{ version }}.tar.gz
-    sha256: 35bf7423b7de245f83613713ac007527ddce08faa251d397bc5920c746eebada
+    sha256: c262667fe847a2d2223fd17d41660235a9393147fa8eb55b2936b82dd64fb5b2
     patches:
       - 001-cmake.patch
+      - 002-triton-import.patch
 
   - url: https://github.com/NVIDIA/cudnn-frontend/archive/refs/tags/v1.10.0.tar.gz
     sha256: 72180416bd77837d4363fa62b4188e27e5f84a256ebfd3963ee7015a5c948e96
@@ -82,6 +83,7 @@ outputs:
       run:
         - python
         - pydantic
+        - packaging
         - importlib-metadata >=1.0
 
       run_constrained:
