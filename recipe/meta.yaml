@@ -85,6 +85,7 @@ outputs:
         - packaging
         - importlib-metadata >=1.0
         - einops
+        - cudnn
 
       run_constrained:
         # additional run constraint to the one from the (version-only) run_export;
