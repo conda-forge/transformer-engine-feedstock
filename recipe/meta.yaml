@@ -76,6 +76,7 @@ outputs:
         - libcublas-dev
         - libcusparse-dev
         - libcusolver-dev
+        - libcudnn-dev
         - cudnn
         - cuda-profiler-api
 
@@ -85,7 +86,6 @@ outputs:
         - packaging
         - importlib-metadata >=1.0
         - einops
-        - cudnn
 
       run_constrained:
         # additional run constraint to the one from the (version-only) run_export;
