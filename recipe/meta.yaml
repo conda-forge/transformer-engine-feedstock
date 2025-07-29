@@ -17,8 +17,8 @@ source:
     patches:
       - 001-cmake.patch
 
-  - url: https://github.com/NVIDIA/cudnn-frontend/archive/refs/tags/v1.11.0.tar.gz
-    sha256: de723e07582603721c97dd4fd82bbad0020fa830d1d1eee6269ebf6950ed3128
+  - url: https://github.com/NVIDIA/cudnn-frontend/archive/refs/tags/v1.12.1.tar.gz
+    sha256: 93025436f48a69e91a6be8442457e574ac23d4fa2995b3b689adcdd758a2b195
     folder: 3rdparty/cudnn-frontend
 
   - url: https://github.com/google/googletest/archive/refs/tags/v1.14.0.tar.gz
@@ -26,7 +26,7 @@ source:
     folder: 3rdparty/googletest
 
 build:
-  number: 0
+  number: 1
 
 outputs:
   - name: transformer-engine-torch
