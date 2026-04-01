@@ -9,7 +9,7 @@
 
 package:
   name: transformer-engine
-  version: {{ version }}
+  version: "{{ version }}"
 
 source:
   - url: https://github.com/NVIDIA/TransformerEngine/archive/refs/tags/v{{ version }}.tar.gz
@@ -30,7 +30,7 @@ build:
 
 outputs:
   - name: transformer-engine-torch
-    version: {{ version }}
+    version: "{{ version }}"
     script: build_te.sh
 
     build:
