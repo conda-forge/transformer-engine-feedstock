@@ -35,7 +35,7 @@ outputs:
 
     build:
       skip: true  # [py==39]
-      skip: true  # [not (cuda_compiler_version or "").startswith("12")]
+      skip: true  # [cuda_major < 12]
       skip: true  # [not (linux64 or aarch64)]
       script_env:
         - CUDA_HOME={{ BUILD_PREFIX }}
