@@ -1,15 +1,9 @@
 {% set version = "2.5" %}
 {% set torch_proc_type = "cuda" if cuda_compiler_version != "None" else "cpu" %}
 
-{% if cuda_compiler_version in (None, "None", True, False) %}
-{% set cuda_major = 0 %}
-{% else %}
-{% set cuda_major = environ.get("cuda_compiler_version", "11.8").split(".")[0] | int %}
-{% endif %}
-
 package:
   name: transformer-engine
-  version: {{ version }}
+  version: "{{ version }}"
 
 source:
   - url: https://github.com/NVIDIA/TransformerEngine/archive/refs/tags/v{{ version }}.tar.gz
@@ -26,16 +20,16 @@ source:
     folder: 3rdparty/googletest
 
 build:
-  number: 1
+  number: 2
 
 outputs:
   - name: transformer-engine-torch
-    version: {{ version }}
+    version: "{{ version }}"
     script: build_te.sh
 
     build:
       skip: true  # [py==39]
-      skip: true  # [not (cuda_compiler_version or "").startswith("12")]
+      skip: true  # [cuda_compiler_version == "None"]
       skip: true  # [not (linux64 or aarch64)]
       script_env:
         - CUDA_HOME={{ BUILD_PREFIX }}
@@ -68,6 +62,7 @@ outputs:
         - pydantic
         - importlib-metadata >=1.0
         - packaging
+        - cuda-version
         - cuda-driver-dev
         - cuda-cudart-dev
         - cuda-nvrtc-dev
