@@ -1,4 +1,4 @@
-{% set version = "2.5" %}
+{% set version = "2.10" %}
 {% set torch_proc_type = "cuda" if cuda_compiler_version != "None" else "cpu" %}
 
 package:
@@ -7,12 +7,12 @@ package:
 
 source:
   - url: https://github.com/NVIDIA/TransformerEngine/archive/refs/tags/v{{ version }}.tar.gz
-    sha256: ee52ee9e43e44edc8598bc3d111eedc2445c9ebfe78a1fcab6f5c4c887020b72
+    sha256: 4ed98fdf435876bd85c6008644fd98e0720aea4bf594df4746266dcbcfbebdbe
     patches:
       - 001-cmake.patch
 
-  - url: https://github.com/NVIDIA/cudnn-frontend/archive/refs/tags/v1.12.1.tar.gz
-    sha256: 93025436f48a69e91a6be8442457e574ac23d4fa2995b3b689adcdd758a2b195
+  - url: https://github.com/NVIDIA/cudnn-frontend/archive/refs/tags/v1.16.0.tar.gz
+    sha256: 77ed731e0885ea2de1b6f272ad156b48292c2299a2571ae576280011fd5626bd
     folder: 3rdparty/cudnn-frontend
 
   - url: https://github.com/google/googletest/archive/refs/tags/v1.14.0.tar.gz
@@ -20,7 +20,7 @@ source:
     folder: 3rdparty/googletest
 
 build:
-  number: 2
+  number: 0
 
 outputs:
   - name: transformer-engine-torch
@@ -48,6 +48,7 @@ outputs:
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - {{ compiler('cuda') }}  # [cuda_compiler_version not in (undefined, 'None')]
+        - cutlass
         - cuda-nvvm
         - cmake >=3.21
         - ninja
