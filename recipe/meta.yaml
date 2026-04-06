@@ -62,6 +62,7 @@ outputs:
         - pydantic
         - importlib-metadata >=1.0
         - packaging
+        - cuda-version
         - cuda-driver-dev
         - cuda-cudart-dev
         - cuda-nvrtc-dev
