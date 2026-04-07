@@ -14,6 +14,9 @@ ln -s $PREFIX/nvvm $PREFIX/targets/x86_64-linux/nvvm
 cp $BUILD_PREFIX/targets/x86_64-linux/include/fatbinary_section.h $PREFIX/targets/x86_64-linux/include
 cp $PREFIX/include/cudnn*.h $PREFIX/targets/x86_64-linux/include
 
+# Use cutlass headers from the conda-forge package instead of the vendored copy
+export NVTE_CMAKE_EXTRA_ARGS="-DCUTLASS_INCLUDE_DIR=$BUILD_PREFIX/include -DCUTLASS_TOOLS_INCLUDE_DIR=$BUILD_PREFIX/include"
+
 echo "Installing transformer-engine"
 MAX_JOBS=1 NVTE_NO_LOCAL_VERSION=1 ${PYTHON} -m pip install -v -v -v .
 

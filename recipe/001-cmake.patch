@@ -9,3 +9,23 @@
              f"-DPython_INCLUDE_DIR={sysconfig.get_path('include')}",
              f"-DCMAKE_BUILD_TYPE={build_type}",
              f"-DCMAKE_INSTALL_PREFIX={install_dir}",
+--- a/transformer_engine/common/CMakeLists.txt
++++ b/transformer_engine/common/CMakeLists.txt
+@@ -88,10 +88,14 @@ else()
+   set(NVTE_CUDA_INCLUDE_DIR ${CMAKE_CUDA_TOOLKIT_INCLUDE_DIRECTORIES})
+ endif()
+
+-set(CUTLASS_INCLUDE_DIR
+-  "${CMAKE_CURRENT_SOURCE_DIR}/../../3rdparty/cutlass/include")
+-set(CUTLASS_TOOLS_INCLUDE_DIR
+-  "${CMAKE_CURRENT_SOURCE_DIR}/../../3rdparty/cutlass/tools/util/include")
++if(NOT DEFINED CUTLASS_INCLUDE_DIR)
++  set(CUTLASS_INCLUDE_DIR
++    "${CMAKE_CURRENT_SOURCE_DIR}/../../3rdparty/cutlass/include")
++endif()
++if(NOT DEFINED CUTLASS_TOOLS_INCLUDE_DIR)
++  set(CUTLASS_TOOLS_INCLUDE_DIR
++    "${CMAKE_CURRENT_SOURCE_DIR}/../../3rdparty/cutlass/tools/util/include")
++endif()
+
+ set(CUDNN_INCLUDE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../../3rdparty/cudnn-frontend/include")
