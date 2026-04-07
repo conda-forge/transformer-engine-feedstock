@@ -83,6 +83,7 @@ outputs:
         - packaging
         - importlib-metadata >=1.0
         - einops
+        - onnxscript
 
       run_constrained:
         # additional run constraint to the one from the (version-only) run_export;
