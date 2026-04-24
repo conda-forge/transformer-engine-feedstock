@@ -1,4 +1,4 @@
-{% set version = "2.13" %}
+{% set version = "2.14" %}
 {% set torch_proc_type = "cuda" if cuda_compiler_version != "None" else "cpu" %}
 
 package:
@@ -7,7 +7,7 @@ package:
 
 source:
   - url: https://github.com/NVIDIA/TransformerEngine/archive/refs/tags/v{{ version }}.tar.gz
-    sha256: b6e8682b2b34cfcae7591e9f38b206658c4fa0f33ddcc42ecdd47e344979a1ab
+    sha256: a99a059294ddfa5af0808d7874abc24f7c7dcfefedde44eb8d26c0ebafcda916
     patches:
       - 001-cmake.patch
 
@@ -20,7 +20,7 @@ source:
     folder: 3rdparty/googletest
 
 build:
-  number: 1
+  number: 0
 
 outputs:
   - name: transformer-engine-torch
