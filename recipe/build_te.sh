@@ -17,6 +17,9 @@ cp $PREFIX/include/cudnn*.h $PREFIX/targets/x86_64-linux/include
 # Use cutlass headers from the conda-forge package instead of the vendored copy
 export NVTE_CMAKE_EXTRA_ARGS="-DCUTLASS_INCLUDE_DIR=$BUILD_PREFIX/include -DCUTLASS_TOOLS_INCLUDE_DIR=$BUILD_PREFIX/include"
 
+# Build the vendored NCCL EP extension against conda-forge's NCCL core package.
+export NCCL_HOME="$PREFIX"
+
 echo "Installing transformer-engine"
 MAX_JOBS=1 NVTE_NO_LOCAL_VERSION=1 ${PYTHON} -m pip install -v -v -v .
 
