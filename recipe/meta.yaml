@@ -102,10 +102,16 @@ outputs:
         - pytorch * {{ torch_proc_type }}*
 
     test:
-      imports:
-        - transformer_engine.pytorch
-        - transformer_engine.common
-        - transformer_engine.common.recipe
+      requires:
+        - cuda-driver-dev
+      commands:
+        # CI runners do not provide the NVIDIA driver library. Preload the
+        # driver stub so imports can still validate the packaged extensions.
+        - export LD_PRELOAD="$PREFIX/lib/stubs/libcuda.so"
+        - python -c "import transformer_engine.pytorch"
+        - python -c "import transformer_engine.common"
+        - python -c "import transformer_engine.common.recipe"
+        - python -c "from transformer_engine.pytorch import ep"
 
 about:
   home: https://github.com/NVIDIA/TransformerEngine
