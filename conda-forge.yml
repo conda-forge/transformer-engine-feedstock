@@ -8,3 +8,5 @@ workflow_settings:
   free_disk_space:
     - os: linux
       value: max
+bot:
+  automerge: true
