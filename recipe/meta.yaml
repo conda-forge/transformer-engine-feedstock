@@ -1,4 +1,5 @@
-{% set version = "2.16.1" %}
+{% set version = "2.17" %}
+{% set nccl_submodule_rev = "a6b5de08b6af4f938cef541ae6e4d405632f89a4" %}
 {% set torch_proc_type = "cuda" if cuda_compiler_version != "None" else "cpu" %}
 
 package:
@@ -7,9 +8,14 @@ package:
 
 source:
   - url: https://github.com/NVIDIA/TransformerEngine/archive/refs/tags/v{{ version }}.tar.gz
-    sha256: d44d6a44025e79c38c3768c1f6055086ba55646ad54c1e4e75a6154096a76ce0
+    sha256: c87d17e1601ecce3e99be9d9fea0d59f9dcea81974ac6633051fcfe5e4d4c4f9
     patches:
       - 001-cmake.patch
+      - 002-nccl-ep-ignore-conda-ldflags.patch
+
+  - url: https://github.com/NVIDIA/nccl/archive/{{ nccl_submodule_rev }}.tar.gz
+    sha256: 61a373de480401cf3be2227ce36121914e384bd6fb0201e76b4a22b2de4f284c
+    folder: 3rdparty/nccl
 
   - url: https://github.com/NVIDIA/cudnn-frontend/archive/refs/tags/v1.22.0.tar.gz
     sha256: da6f23da7ede9e0ad22fa9fec9ef266e3d2fd581aab385c14a465a2d737ce002
@@ -20,7 +26,7 @@ source:
     folder: 3rdparty/googletest
 
 build:
-  number: 1
+  number: 0
 
 outputs:
   - name: transformer-engine-torch
@@ -34,6 +40,9 @@ outputs:
       script_env:
         - CUDA_HOME={{ BUILD_PREFIX }}
         - NVTE_FRAMEWORK=pytorch
+      missing_dso_whitelist:
+        # libcuda is supplied by the host NVIDIA driver, not a conda package.
+        - "*/libcuda.so.1"  # [linux]
 
       run_exports:
         - {{ pin_subpackage('transformer-engine-torch', max_pin='x.x') }}
@@ -51,6 +60,7 @@ outputs:
         - cutlass
         - cuda-nvvm
         - cmake >=3.21
+        - make
         - ninja
 
       host:
@@ -63,7 +73,7 @@ outputs:
         - pydantic
         - importlib-metadata >=1.0
         - packaging
-        - cuda-version
+        - cuda-version {{ cuda_compiler_version }}
         - cuda-driver-dev
         - cuda-cudart-dev
         - cuda-nvrtc-dev
@@ -76,6 +86,7 @@ outputs:
         - libcudnn-dev
         - cudnn
         - cuda-profiler-api
+        - nccl >=2.30.4
 
       run:
         - python
@@ -91,16 +102,25 @@ outputs:
         - pytorch * {{ torch_proc_type }}*
 
     test:
-      imports:
-        - transformer_engine.pytorch
-        - transformer_engine.common
-        - transformer_engine.common.recipe
+      requires:
+        - cuda-driver-dev
+      commands:
+        # CI runners do not provide the NVIDIA driver library. Preload the
+        # driver stub so imports can still validate the packaged extensions.
+        - export LD_PRELOAD="$PREFIX/lib/stubs/libcuda.so"
+        - python -c "import transformer_engine.pytorch"
+        - python -c "import transformer_engine.common"
+        - python -c "import transformer_engine.common.recipe"
+        - python -c "from transformer_engine.pytorch import ep"
 
 about:
   home: https://github.com/NVIDIA/TransformerEngine
   summary: A library for accelerating Transformer models on NVIDIA GPUs.
-  license: Apache-2.0
-  license_file: LICENSE
+  license: Apache-2.0 AND MIT
+  license_file:
+    - LICENSE
+    - 3rdparty/nccl/contrib/nccl_ep/LICENSE.txt
+    - 3rdparty/nccl/contrib/nccl_ep/ThirdPartyNotices.txt
   dev_url: https://github.com/NVIDIA/TransformerEngine
 
 extra:

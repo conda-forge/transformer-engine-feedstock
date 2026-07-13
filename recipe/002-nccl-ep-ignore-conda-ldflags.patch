@@ -1,0 +1,13 @@
+--- a/setup.py
++++ b/setup.py
+@@ -252,6 +252,10 @@ def build_nccl_ep_submodule() -> str:
+ 
+     nproc = os.cpu_count() or 8
+     env = os.environ.copy()
++    # The NCCL EP Makefile passes LDFLAGS directly to nvcc, which does not
++    # understand conda's GCC-driver-style -Wl,... flags. Keep those flags in
++    # the parent environment for the main CMake build, but not this sub-build.
++    env.pop("LDFLAGS", None)
+     env["NVCC_GENCODE"] = gencode
+     # NCCL EP needs the core NCCL headers + libnccl.so; write NCCL EP build
+     # outputs to the submodule's local build/ tree.
