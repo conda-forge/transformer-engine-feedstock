@@ -26,7 +26,7 @@ source:
     folder: 3rdparty/googletest
 
 build:
-  number: 0
+  number: 1
 
 outputs:
   - name: transformer-engine-torch
@@ -46,6 +46,14 @@ outputs:
 
       run_exports:
         - {{ pin_subpackage('transformer-engine-torch', max_pin='x.x') }}
+      # NVTX is used through headers/PyTorch, not a DSO in this package.
+      ignore_run_exports:
+        - cuda-nvtx
+        # PyTorch CUDA headers need cusparse.h at build time, but TE does not
+        # link libcusparse at runtime.
+        - libcusparse
+        # Likewise, PyTorch CUDA headers need cusolverDn.h only while compiling.
+        - libcusolver
 
     requirements:
       build:
@@ -84,7 +92,6 @@ outputs:
         - libcusolver-dev
         - libcurand-dev
         - libcudnn-dev
-        - cudnn
         - cuda-profiler-api
         - nccl >=2.30.4
 
@@ -95,6 +102,9 @@ outputs:
         - importlib-metadata >=1.0
         - einops
         - onnxscript
+        # Loaded unconditionally by transformer_engine.common at import time.
+        - cuda-nvrtc
+        - libcurand
 
       run_constrained:
         # additional run constraint to the one from the (version-only) run_export;
