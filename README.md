@@ -5,7 +5,7 @@ Feedstock license: [BSD-3-Clause](https://github.com/conda-forge/transformer-eng
 
 Home: https://github.com/NVIDIA/TransformerEngine
 
-Package license: Apache-2.0
+Package license: Apache-2.0 AND MIT
 
 Summary: A library for accelerating Transformer models on NVIDIA GPUs.
 
